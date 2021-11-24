@@ -39,8 +39,10 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
         "*** YOUR CODE HERE ***"
         operator = scheme_eval(first, env)
         validate_procedure(operator)
+        #BEGIN PROBLEM 20
         if isinstance(operator, MacroProcedure):
             return scheme_eval(operator.apply_macro(rest, env), env)
+        #END PROBLEM 20
         operands = rest.map(lambda e: scheme_eval(e, env))
         return scheme_apply(operator, operands, env)
         # END PROBLEM 4
@@ -467,7 +469,7 @@ def do_define_macro(expressions, env):
         args = target.rest
         body = expressions.rest
         macro = MacroProcedure(args, body, env)
-        env.bindings[macro_name] = macro
+        env.define(macro_name, macro)
         return macro_name
     else:
         bad_target = target.first if isinstance(target, Pair) else target
